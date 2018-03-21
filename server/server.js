@@ -32,6 +32,11 @@ io.on('connection', (socket) => {
         //     text: message.text,
         //     createdAt: new Date().getTime()
         // })
+
+    });
+
+    socket.on('createLocationMessage', (coords) => {
+        io.emit('newMessage', generateMessage('Admin',`${coords.latitude}, ${coords.longitude}`));
     });
 
     socket.on('disconnect', () => {

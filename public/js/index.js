@@ -12,18 +12,19 @@ socket.on('disconnect', function () {
 });
 
 socket.on('newMessage', function (message) {
-    console.log('new message', message);
+    var formattedTime = moment(message.createdAt).format('h:mm a');
     var li=jQuery('<li></li>');
-    li.text(`${message.from}: ${message.text}`);
+    li.text(`${message.from} ${formattedTime}: ${message.text}`);
 
     jQuery('#messages').append(li);
 });
 
 socket.on('newLocationMessage', function (message) {
+    var formattedTime = moment(message.createdAt).format('h:mm a');
     var li=jQuery('<li></li>');
     var a = jQuery('<a target="_blank">My current location</a>'); // _blank makes it to open a new tab
 
-    li.text(`${message.from}: `);
+    li.text(`${message.from} ${formattedTime}: `);
     a.attr('href',message.url);    // by putting text in this fomat and not inside text string we avoid malicious users to send html code in text
     li.append(a);
     jQuery('#messages').append(li);

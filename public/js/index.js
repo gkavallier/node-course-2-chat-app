@@ -13,21 +13,37 @@ socket.on('disconnect', function () {
 
 socket.on('newMessage', function (message) {
     var formattedTime = moment(message.createdAt).format('h:mm a');
-    var li=jQuery('<li></li>');
-    li.text(`${message.from} ${formattedTime}: ${message.text}`);
+    var template = jQuery('#message-template').html();
+    var html = Mustache.render(template, {
+        text: message.text,
+        from: message.from,
+        createdAt: formattedTime
+    });
 
-    jQuery('#messages').append(li);
+    jQuery('#messages').append(html);
+    // var li=jQuery('<li></li>');
+    // li.text(`${message.from} ${formattedTime}: ${message.text}`);
+
+    // jQuery('#messages').append(li);
 });
 
 socket.on('newLocationMessage', function (message) {
     var formattedTime = moment(message.createdAt).format('h:mm a');
-    var li=jQuery('<li></li>');
-    var a = jQuery('<a target="_blank">My current location</a>'); // _blank makes it to open a new tab
+    var template = jQuery('#location-message-template'.html());
+    var html = Mustache.render(template, {
+        from: message.from,
+        url: message.url,
+        createdAt: formattedTime
+    });
 
-    li.text(`${message.from} ${formattedTime}: `);
-    a.attr('href',message.url);    // by putting text in this fomat and not inside text string we avoid malicious users to send html code in text
-    li.append(a);
-    jQuery('#messages').append(li);
+    jQuery('#messages').append(html);
+    // var li=jQuery('<li></li>');
+    // var a = jQuery('<a target="_blank">My current location</a>'); // _blank makes it to open a new tab
+
+    // li.text(`${message.from} ${formattedTime}: `);
+    // a.attr('href',message.url);    // by putting text in this fomat and not inside text string we avoid malicious users to send html code in text
+    // li.append(a);
+    // jQuery('#messages').append(li);
 });
 
 
